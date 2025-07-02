@@ -1,0 +1,5 @@
+Useful GIT core commands:
+https://rogerdudler.github.io/git-guide/
+
+Create GIT ignores files:
+https://www.toptal.com/developers/gitignore/
