@@ -49,7 +49,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        Vector3 moveDirection = new Vector3(m_moveAmount.x, 0f, m_moveAmount.y); // Convert move m_moveAmount into a Vector3 (to compute next operation)
+        // Use local space directions 2D
+        Vector3 moveDirection = transform.forward * m_moveAmount.y + transform.right * m_moveAmount.x;
         m_rigidbody.MovePosition(m_rigidbody.position + moveDirection * moveSpeed * Time.deltaTime);
     }
 }
