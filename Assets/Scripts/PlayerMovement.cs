@@ -32,12 +32,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        m_inputActions.FindActionMap("Player").Enable();
+        // Enable the action map
+        var PlayerMap = m_inputActions.FindActionMap("Player");
+        PlayerMap.Enable();
     }
 
     private void OnDisable()
     {
-        m_inputActions.FindActionMap("Player").Disable();
+        // Disable the action map
+        var PlayerMap = m_inputActions.FindActionMap("Player");
+        PlayerMap.Disable();
     }
 
     private void Awake()
