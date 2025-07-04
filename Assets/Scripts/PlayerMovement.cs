@@ -12,10 +12,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveAmount;
 
     // Jump Action
-    private InputAction m_jumpAction;
+    private InputAction _jumpAction;
     [SerializeField]
     private float _jumpStrength = 1000.0f;
     private float _fallStrengh = 10.0f;
+
+    [SerializeField]
+    private int _maxNumberOfDoubleJump = 1;
+    private int _currentNumberOfDoubleJump = 1;
 
     private Rigidbody _rigidbody;
 
@@ -27,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
         var playerMap = _inputActions.FindActionMap("Player");
 
         _moveAction = playerMap.FindAction("Move");
-        m_jumpAction = playerMap.FindAction("Jump");
+        _jumpAction = playerMap.FindAction("Jump");
 
         _groundController = GetComponent<GroundController>();
     }
@@ -55,16 +59,20 @@ public class PlayerMovement : MonoBehaviour
         var playerMap = _inputActions.FindActionMap("Player");
         playerMap.Enable();
 
-        m_jumpAction.performed += Jump;
+        _jumpAction.performed += Jump;
+
+        _groundController.OnPlayerLanded += Land;
     }
 
     private void OnDisable()
     {
         // Unregister the callback and disable the action
-        if (m_jumpAction != null)
+        if (_jumpAction != null)
         {
-            m_jumpAction.performed -= Jump;
-            m_jumpAction.Disable();
+            _jumpAction.performed -= Jump;
+            _jumpAction.Disable();
+
+            _groundController.OnPlayerLanded -= Land;
         }
 
         // Disable the action map
@@ -81,17 +89,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void Fall()
     {
-        _rigidbody.AddForce(_rigidbody.transform.up * -1 * _fallStrengh);
+        _rigidbody.AddForce(_rigidbody.transform.up * -1 * _fallStrengh); // Gets the down vector * _fallStrengh
     }
 
     private void Jump(InputAction.CallbackContext context)
     {
 
-        if (_groundController.isGrounded)
+        if (_groundController._isGrounded) // If jumping from ground
         {
             Vector3 jumpVector = transform.up * _jumpStrength;
             _rigidbody.AddForce(jumpVector);
         }
+        else if (_currentNumberOfDoubleJump > 0) // If double jumping
+        {
+            _currentNumberOfDoubleJump--;
+            Vector3 jumpVector = transform.up * _jumpStrength;
+            _rigidbody.AddForce(jumpVector);
+        }
 
+    }
+
+    private void Land()
+    {
+        _currentNumberOfDoubleJump = _maxNumberOfDoubleJump;
     }
 }
