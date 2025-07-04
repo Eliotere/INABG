@@ -1,6 +1,5 @@
-using System.Data;
+using System;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class GroundController : MonoBehaviour
 {
@@ -11,10 +10,12 @@ public class GroundController : MonoBehaviour
     private LayerMask m_groundLayerMask;
 
     [SerializeField]
-    private SphereCollider m_sphereCollider;
-    public bool isGrounded { get; private set; }
+    private SphereCollider _sphereCollider;
+    private bool _wasGrounded = false;
+    public bool _isGrounded { get; private set; }
+    public event Action OnPlayerLanded;
 
-    public float? distanceToGround { get; private set; }
+    public float? _distanceToGround { get; private set; }
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class GroundController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float sphereCastRadius = m_sphereCollider.radius - 0.1f;
+        float sphereCastRadius = _sphereCollider.radius - 0.1f;
         Vector3 sphereCastOrigin = transform.position;
         bool isGroundedBelow = Physics.SphereCast(
             sphereCastOrigin,
@@ -37,12 +38,20 @@ public class GroundController : MonoBehaviour
 
         if (isGroundedBelow)
         {
-            distanceToGround = Vector3.Distance(transform.position, hitInfo.point);
+            _distanceToGround = Vector3.Distance(transform.position, hitInfo.point);
         }
         else
         {
-            distanceToGround = null;
+            _distanceToGround = null;
         }
-        isGrounded = isGroundedBelow && distanceToGround <= m_groundDistanceTolerance;
+
+        // Define isGrounded State
+        _isGrounded = isGroundedBelow && _distanceToGround <= m_groundDistanceTolerance;
+
+        if (_isGrounded && !_wasGrounded)
+        {
+            OnPlayerLanded?.Invoke();
+        }
+        _wasGrounded = _isGrounded;
     }
 }

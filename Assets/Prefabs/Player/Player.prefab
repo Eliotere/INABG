@@ -159,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputActions: {fileID: 0}
   _jumpStrength: 1000
+  _maxNumberOfDoubleJump: 1
   moveSpeed: 5
 --- !u!54 &3550750458236879404
 Rigidbody:
@@ -203,7 +204,7 @@ MonoBehaviour:
   m_groundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_sphereCollider: {fileID: 8763108225794830437}
+  _sphereCollider: {fileID: 8763108225794830437}
 --- !u!114 &305377929245658126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f710d8ae920dc43ab5a6b18744f420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentArena: {fileID: 0}
 --- !u!1 &4879738189733399137
 GameObject:
   m_ObjectHideFlags: 0
