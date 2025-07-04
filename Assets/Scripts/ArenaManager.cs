@@ -1,19 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using Unity.VisualScripting;
+
 public class ArenaManager : MonoBehaviour
 {
 
     public List<GameObject> m_players = new List<GameObject>();
     public List<GameObject> m_ennemies = new List<GameObject>();
 
-    public GameObject object_to_snap;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Test();
     }
 
     // Update is called once per frame
@@ -76,12 +73,6 @@ public class ArenaManager : MonoBehaviour
     public Vector3 ProjectOnPlane(Vector3 point_to_project)
     {
         return Vector3.ProjectOnPlane(point_to_project, transform.up) + Vector3.Dot(transform.position, transform.up) * transform.up;
-    }
-
-    private void Test()
-    {
-        AddPlayer(object_to_snap);
-        RemovePlayer(object_to_snap);
     }
 
 }
