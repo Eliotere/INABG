@@ -6,10 +6,10 @@ public class DebugMode : MonoBehaviour
 
     public InputActionAsset m_inputActions;
 
-    private InputAction debug1;
-    private InputAction debug2;
-    private InputAction debug3;
-    private InputAction debug4;
+    private InputAction debug1Action;
+    private InputAction debug2Action;
+    private InputAction debug3Action;
+    private InputAction debug4Action;
 
     public GameObject first_arena;
     public GameObject second_arena;
@@ -35,46 +35,46 @@ public class DebugMode : MonoBehaviour
         debugMap.Enable();
 
         // Find the action named "Debug1"
-        debug1 = debugMap.FindAction("Debug1");
+        debug1Action = debugMap.FindAction("Debug1");
         // Register the callback
-        debug1.performed += Debug1;
+        debug1Action.performed += Debug1;
 
-        debug2 = debugMap.FindAction("Debug2");
-        debug2.performed += Debug2;
+        debug2Action = debugMap.FindAction("Debug2");
+        debug2Action.performed += Debug2;
 
-        debug3 = debugMap.FindAction("Debug3");
-        debug3.performed += Debug3;
+        debug3Action = debugMap.FindAction("Debug3");
+        debug3Action.performed += Debug3;
         
-        debug4 = debugMap.FindAction("Debug4");
-        debug4.performed += Debug4;
+        debug4Action = debugMap.FindAction("Debug4");
+        debug4Action.performed += Debug4;
     }
 
     private void OnDisable()
 
     {
         // Unregister the callback and disable the action
-        if (debug1 != null)
+        if (debug1Action != null)
         {
-            debug1.performed -= Debug1;
-            debug1.Disable();
+            debug1Action.performed -= Debug1;
+            debug1Action.Disable();
         }
 
-        if (debug2 != null)
+        if (debug2Action != null)
         {
-            debug2.performed -= Debug1;
-            debug2.Disable();
+            debug2Action.performed -= Debug1;
+            debug2Action.Disable();
         }
 
-        if (debug3 != null)
+        if (debug3Action != null)
         {
-            debug3.performed -= Debug1;
-            debug3.Disable();
+            debug3Action.performed -= Debug1;
+            debug3Action.Disable();
         }
 
-        if (debug4 != null)
+        if (debug4Action != null)
         {
-            debug4.performed -= Debug1;
-            debug4.Disable();
+            debug4Action.performed -= Debug1;
+            debug4Action.Disable();
         }
 
         // Disable the action map
