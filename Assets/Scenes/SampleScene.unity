@@ -756,7 +756,7 @@ PrefabInstance:
       objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: -1834408393947511654, guid: b43d61dcb5880b74d91684b2e40cf3b1, type: 3}
       propertyPath: _jumpStrength
-      value: 350
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: -1834408393947511654, guid: b43d61dcb5880b74d91684b2e40cf3b1, type: 3}
       propertyPath: m_inputActions

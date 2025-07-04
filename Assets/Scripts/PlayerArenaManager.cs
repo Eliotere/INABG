@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerArenaManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject parentArena = null;
+    [SerializeField]
+    private List<GameObject> closeArenas;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -71,5 +74,15 @@ public class PlayerArenaManager : MonoBehaviour
         {
             Debug.LogError($" Exception: {e.Message} when removing player arena of '{this?.name}' for the parentArena '{parentArena?.name}' ");
         }
+    }
+
+    public void AddToCloseArenas(GameObject gameObject)
+    {
+        closeArenas.Add(gameObject);
+    }
+
+    public void RemoveFromCloseArenas(GameObject gameObject)
+    {
+        closeArenas.Remove(gameObject);
     }
 }
