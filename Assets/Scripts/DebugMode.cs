@@ -89,27 +89,29 @@ public class DebugMode : MonoBehaviour
     {
         Debug.Log("Debug1 key pressed!");
 
-        first_arena.GetComponent<ArenaManager>().AddPlayer(player);
+        player.GetComponent<PlayerArenaManager>().SetArena(first_arena);
     }
 
     private void Debug2(InputAction.CallbackContext context)
     {
         Debug.Log("Debug2 key pressed!");
 
-        first_arena.GetComponent<ArenaManager>().RemoveEnnemy(player);
+        player.GetComponent<PlayerArenaManager>().RemoveArena();
     }
 
     private void Debug3(InputAction.CallbackContext context)
     {
         Debug.Log("Debug3 key pressed!");
 
-        second_arena.GetComponent<ArenaManager>().AddPlayer(player);
+        player.GetComponent<PlayerArenaManager>().SetArena(second_arena);
 
     }
 
     private void Debug4(InputAction.CallbackContext context)
     {
         Debug.Log("Debug4 key pressed!");
+
+        player.GetComponent<PlayerArenaManager>().RemoveArena();
     }
     
 

@@ -21,7 +21,6 @@ public class ArenaManager : MonoBehaviour
 
     public void AddPlayer(GameObject player)
     {
-        player.transform.position = ProjectOnPlane(player.transform.position);
         m_players.Add(player);
         player.transform.SetParent(transform.Find("Players"), true);
     }
@@ -34,7 +33,6 @@ public class ArenaManager : MonoBehaviour
             {
                 throw new Exception("Player removal failed");
             }
-            player.transform.SetParent(null, true);
             return true;
         }
         catch (Exception e)
@@ -46,10 +44,8 @@ public class ArenaManager : MonoBehaviour
 
     public void AddEnnemy(GameObject ennemy)
     {
-        ennemy.transform.position = ProjectOnPlane(ennemy.transform.position);
         m_players.Add(ennemy);
         ennemy.transform.SetParent(transform.Find("Ennemies"), true);
-
     }
 
     public bool RemoveEnnemy(GameObject ennemy)
@@ -60,7 +56,6 @@ public class ArenaManager : MonoBehaviour
             {
                 throw new Exception("Player removal failed");
             }
-            ennemy.transform.SetParent(null, true);
             return true;
         }
         catch (Exception e)
