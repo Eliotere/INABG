@@ -34,18 +34,10 @@ public class DebugMode : MonoBehaviour
         var debugMap = m_inputActions.FindActionMap("Debug");
         debugMap.Enable();
 
-        // Find the action named "Debug1"
-        debug1Action = debugMap.FindAction("Debug1");
         // Register the callback
         debug1Action.performed += Debug1;
-
-        debug2Action = debugMap.FindAction("Debug2");
         debug2Action.performed += Debug2;
-
-        debug3Action = debugMap.FindAction("Debug3");
         debug3Action.performed += Debug3;
-        
-        debug4Action = debugMap.FindAction("Debug4");
         debug4Action.performed += Debug4;
     }
 
@@ -84,7 +76,13 @@ public class DebugMode : MonoBehaviour
 
     private void Awake()
     {
+        var debugMap = m_inputActions.FindActionMap("Debug");
 
+        // Find the action named "Debug1"
+        debug1Action = debugMap.FindAction("Debug1");
+        debug2Action = debugMap.FindAction("Debug2");
+        debug3Action = debugMap.FindAction("Debug3");   
+        debug4Action = debugMap.FindAction("Debug4");
     }
 
     private void Debug1(InputAction.CallbackContext context)
