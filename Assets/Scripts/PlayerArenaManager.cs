@@ -1,0 +1,75 @@
+using System;
+using UnityEngine;
+
+public class PlayerArenaManager : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject parentArena = null;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void SetArena(GameObject arena)
+    {
+        try
+        {
+            ArenaManager arenaManager = arena.GetComponent<ArenaManager>();
+            if (!arenaManager)
+            {
+                throw new Exception("Component 'arenaManager' has not been found");
+            }
+
+            if (parentArena)
+            {
+                parentArena.GetComponent<ArenaManager>().RemovePlayer(gameObject);
+            }
+            arena.GetComponent<ArenaManager>().AddPlayer(gameObject);
+            parentArena = arena;
+
+            transform.rotation = parentArena.transform.rotation;
+
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($" Exception: {e.Message} when setting player arena of '{this?.name}' for the arena '{arena?.name}' ");
+        }
+    }
+
+    public void RemoveArena()
+    {
+        try
+        {
+            if (!parentArena)
+            {
+                return;
+            }
+            else
+            {
+                ArenaManager arenaManager = parentArena.GetComponent<ArenaManager>();
+                if (!arenaManager)
+                {
+                    throw new Exception("Component 'arenaManager' has not been found");
+                }
+                if (parentArena)
+                {
+                    parentArena.GetComponent<ArenaManager>().RemovePlayer(gameObject);
+                }
+                gameObject.transform.SetParent(null);
+                parentArena = null;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($" Exception: {e.Message} when removing player arena of '{this?.name}' for the parentArena '{parentArena?.name}' ");
+        }
+    }
+}
