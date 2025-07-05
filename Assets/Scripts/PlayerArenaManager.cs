@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class PlayerArenaManager : MonoBehaviour
@@ -18,7 +20,10 @@ public class PlayerArenaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (parentArena)
+        {
+            transform.rotation = parentArena.transform.rotation;
+        }
     }
 
     public void SetArena(GameObject arena)
@@ -37,8 +42,6 @@ public class PlayerArenaManager : MonoBehaviour
             }
             arena.GetComponent<ArenaManager>().AddPlayer(gameObject);
             parentArena = arena;
-
-            transform.rotation = parentArena.transform.rotation;
 
         }
         catch (Exception e)
@@ -79,10 +82,28 @@ public class PlayerArenaManager : MonoBehaviour
     public void AddToCloseArenas(GameObject gameObject)
     {
         closeArenas.Add(gameObject);
+        parentArena = GetHighestPriorityCloseArenas();
     }
 
     public void RemoveFromCloseArenas(GameObject gameObject)
     {
         closeArenas.Remove(gameObject);
+        parentArena = GetHighestPriorityCloseArenas();
+    }
+
+    public GameObject GetHighestPriorityCloseArenas()
+    {
+        GameObject highestArena = null;
+        int highestPriority = int.MinValue;
+
+        foreach (GameObject arena in closeArenas) {
+            ArenaManager arenaManager = arena.GetComponent<ArenaManager>();
+            if (arenaManager && arenaManager.priority > highestPriority)
+            {
+                highestArena = arena;
+                highestPriority = arenaManager.priority;
+            }
+        }
+    return highestArena;
     }
 }

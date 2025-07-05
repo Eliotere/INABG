@@ -8,6 +8,9 @@ public class ArenaManager : MonoBehaviour
     private List<GameObject> _players = new List<GameObject>();
     private List<GameObject> _ennemies = new List<GameObject>();
 
+    [SerializeField]
+    public int priority = 50;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
