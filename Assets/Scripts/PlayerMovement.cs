@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
     private InputAction _jumpAction;
     [SerializeField]
     private float _jumpStrength = 1000.0f;
-    private float _fallStrengh = 10.0f;
 
     [SerializeField]
     private int _maxNumberOfDoubleJump = 1;
@@ -50,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        Fall();
     }
 
     private void OnEnable()
@@ -85,11 +83,6 @@ public class PlayerMovement : MonoBehaviour
         // Use local space directions 2D
         Vector3 moveDirection = transform.forward * _moveAmount.y + transform.right * _moveAmount.x;
         _rigidbody.MovePosition(_rigidbody.position + moveDirection * moveSpeed * Time.deltaTime);
-    }
-
-    private void Fall()
-    {
-        _rigidbody.AddForce(_rigidbody.transform.up * -1 * _fallStrengh); // Gets the down vector * _fallStrengh
     }
 
     private void Jump(InputAction.CallbackContext context)

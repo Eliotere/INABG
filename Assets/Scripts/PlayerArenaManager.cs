@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class PlayerArenaManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject parentArena = null;
+    [SerializeField]
+    private List<GameObject> closeArenas;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,7 +20,10 @@ public class PlayerArenaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (parentArena)
+        {
+            transform.rotation = parentArena.transform.rotation;
+        }
     }
 
     public void SetArena(GameObject arena)
@@ -34,8 +42,6 @@ public class PlayerArenaManager : MonoBehaviour
             }
             arena.GetComponent<ArenaManager>().AddPlayer(gameObject);
             parentArena = arena;
-
-            transform.rotation = parentArena.transform.rotation;
 
         }
         catch (Exception e)
@@ -71,5 +77,33 @@ public class PlayerArenaManager : MonoBehaviour
         {
             Debug.LogError($" Exception: {e.Message} when removing player arena of '{this?.name}' for the parentArena '{parentArena?.name}' ");
         }
+    }
+
+    public void AddToCloseArenas(GameObject gameObject)
+    {
+        closeArenas.Add(gameObject);
+        parentArena = GetHighestPriorityCloseArenas();
+    }
+
+    public void RemoveFromCloseArenas(GameObject gameObject)
+    {
+        closeArenas.Remove(gameObject);
+        parentArena = GetHighestPriorityCloseArenas();
+    }
+
+    public GameObject GetHighestPriorityCloseArenas()
+    {
+        GameObject highestArena = null;
+        int highestPriority = int.MinValue;
+
+        foreach (GameObject arena in closeArenas) {
+            ArenaManager arenaManager = arena.GetComponent<ArenaManager>();
+            if (arenaManager && arenaManager.priority > highestPriority)
+            {
+                highestArena = arena;
+                highestPriority = arenaManager.priority;
+            }
+        }
+    return highestArena;
     }
 }

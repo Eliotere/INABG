@@ -5,8 +5,11 @@ using System;
 public class ArenaManager : MonoBehaviour
 {
 
-    public List<GameObject> m_players = new List<GameObject>();
-    public List<GameObject> m_ennemies = new List<GameObject>();
+    private List<GameObject> _players = new List<GameObject>();
+    private List<GameObject> _ennemies = new List<GameObject>();
+
+    [SerializeField]
+    public int priority = 50;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,7 +24,7 @@ public class ArenaManager : MonoBehaviour
 
     public void AddPlayer(GameObject player)
     {
-        m_players.Add(player);
+        _players.Add(player);
         player.transform.SetParent(transform.Find("Players"), true);
     }
 
@@ -29,7 +32,7 @@ public class ArenaManager : MonoBehaviour
     {
         try
         {
-            if (!m_players.Remove(player))
+            if (!_players.Remove(player))
             {
                 throw new Exception("Player removal failed");
             }
@@ -44,7 +47,7 @@ public class ArenaManager : MonoBehaviour
 
     public void AddEnnemy(GameObject ennemy)
     {
-        m_players.Add(ennemy);
+        _players.Add(ennemy);
         ennemy.transform.SetParent(transform.Find("Ennemies"), true);
     }
 
@@ -52,7 +55,7 @@ public class ArenaManager : MonoBehaviour
     {
         try
         {
-            if (!m_players.Remove(ennemy))
+            if (!_players.Remove(ennemy))
             {
                 throw new Exception("Player removal failed");
             }
@@ -69,5 +72,4 @@ public class ArenaManager : MonoBehaviour
     {
         return Vector3.ProjectOnPlane(point_to_project, transform.up) + Vector3.Dot(transform.position, transform.up) * transform.up;
     }
-
 }
