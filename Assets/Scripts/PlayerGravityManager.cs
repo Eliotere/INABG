@@ -22,6 +22,6 @@ public class PlayerGravityManager : MonoBehaviour
     
     private void Fall()
     {
-        _rigidbody.AddForce(_rigidbody.transform.up * -1 * _gravityStrengh); // Gets the down vector * _fallStrengh
+        _rigidbody.AddForce(_rigidbody.transform.up * -1 * _gravityStrengh, ForceMode.Acceleration); // Gets the down vector * _fallStrengh
     }
 }

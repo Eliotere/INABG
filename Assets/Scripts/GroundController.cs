@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class GroundController : MonoBehaviour
@@ -11,11 +12,13 @@ public class GroundController : MonoBehaviour
 
     [SerializeField]
     private SphereCollider _sphereCollider;
+    [SerializeField]
     private bool _wasGrounded = false;
-    public bool _isGrounded { get; private set; }
+    [SerializeField]
+    public bool _isGrounded = false;
     public event Action OnPlayerLanded;
 
-    public float? _distanceToGround { get; private set; }
+    public float? _distanceToGround = null;
 
     private void Awake()
     {
@@ -24,7 +27,7 @@ public class GroundController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float sphereCastRadius = _sphereCollider.radius - 0.1f;
+        float sphereCastRadius = _sphereCollider.radius;
         Vector3 sphereCastOrigin = transform.position;
         bool isGroundedBelow = Physics.SphereCast(
             sphereCastOrigin,
