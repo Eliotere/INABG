@@ -14,10 +14,11 @@ public class PlayerMovement : MonoBehaviour
     // Jump Action
     private InputAction _jumpAction;
     [SerializeField]
-    private float _jumpStrength = 1000.0f;
+    private float _jumpStrength = 10.0f;
 
     [SerializeField]
     private int _maxNumberOfDoubleJump = 1;
+    [SerializeField]
     private int _currentNumberOfDoubleJump = 1;
 
     private Rigidbody _rigidbody;
@@ -91,13 +92,14 @@ public class PlayerMovement : MonoBehaviour
         if (_groundController._isGrounded) // If jumping from ground
         {
             Vector3 jumpVector = transform.up * _jumpStrength;
-            _rigidbody.AddForce(jumpVector);
+            _rigidbody.linearVelocity = jumpVector;
+            //_rigidbody.AddForce(jumpVector);
         }
         else if (_currentNumberOfDoubleJump > 0) // If double jumping
         {
             _currentNumberOfDoubleJump--;
             Vector3 jumpVector = transform.up * _jumpStrength;
-            _rigidbody.AddForce(jumpVector);
+            _rigidbody.linearVelocity = jumpVector;
         }
 
     }
