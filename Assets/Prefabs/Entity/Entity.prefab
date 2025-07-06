@@ -216,6 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentArena: {fileID: 0}
   closeArenas: []
+  _playerGravityManager: {fileID: 8651357720213146214}
 --- !u!114 &8651357720213146214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,3 +230,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gravityStrengh: 10
+  _normalizedGravityDirection: {x: 0, y: 0, z: 0}

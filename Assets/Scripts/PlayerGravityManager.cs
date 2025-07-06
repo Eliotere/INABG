@@ -6,12 +6,15 @@ public class PlayerGravityManager : MonoBehaviour
     private Rigidbody _rigidbody;
     [SerializeField]
     private float _gravityStrengh = 10.0f;
+    [SerializeField]
+    private Vector3 _normalizedGravityDirection;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _normalizedGravityDirection = transform.up * -1; // Sets default gravity direction as local down
     }
 
     // Update is called once per frame
@@ -19,9 +22,19 @@ public class PlayerGravityManager : MonoBehaviour
     {
         Fall();
     }
-    
+
     private void Fall()
     {
-        _rigidbody.AddForce(_rigidbody.transform.up * -1 * _gravityStrengh, ForceMode.Acceleration); // Gets the down vector * _fallStrengh
+        _rigidbody.AddForce(_normalizedGravityDirection * _gravityStrengh, ForceMode.Acceleration); // Gets the down vector * _fallStrengh
+    }
+
+    public void SetNormalizedGravityDirection(Vector3 newNormalizedGravityDirection)
+    {
+        _normalizedGravityDirection = newNormalizedGravityDirection;
+    }
+    
+    public Vector3 GetNormalizedGravityDirection()
+    {
+        return _normalizedGravityDirection;
     }
 }
