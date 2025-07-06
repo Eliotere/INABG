@@ -11,6 +11,10 @@ public class PlayerArenaManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> closeArenas;
 
+    [SerializeField]
+    private PlayerGravityManager _playerGravityManager;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,7 +26,8 @@ public class PlayerArenaManager : MonoBehaviour
     {
         if (parentArena)
         {
-            transform.rotation = parentArena.transform.rotation;
+            transform.rotation = parentArena.transform.rotation; // Actualize player rotation
+            _playerGravityManager.SetNormalizedGravityDirection(parentArena.transform.up * -1); // Actualize gravity direction
         }
     }
 
