@@ -41,7 +41,7 @@ public class PlayerArenaManager : MonoBehaviour
                 ArenaManager arenaManager = arena.GetComponent<ArenaManager>();
                 if (!arenaManager)
                 {
-                    throw new Exception("Component arenaManager has not been found");
+                    throw new Exception("Component arxenaManager has not been found");
                 }
 
                 if (parentArena)
