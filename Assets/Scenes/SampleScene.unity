@@ -503,6 +503,14 @@ PrefabInstance:
       propertyPath: _inputActions
       value: 
       objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    - target: {fileID: 2114247641400846655, guid: 7be4587a61ffd794a8dce404a8727a21, type: 3}
+      propertyPath: targetOffset.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2114247641400846655, guid: 7be4587a61ffd794a8dce404a8727a21, type: 3}
+      propertyPath: targetOffset.z
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 4139021623920158792, guid: 7be4587a61ffd794a8dce404a8727a21, type: 3}
       propertyPath: m_Name
       value: Player
