@@ -1,14 +1,7 @@
-using System;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject cameraHolder;
-    [SerializeField]
-    private Vector3 targetOffset;
-    [SerializeField]
-    private Vector3 futurePosition;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,11 +10,8 @@ public class PlayerCameraController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {
-        Vector3 targetPosition = gameObject.transform.position + gameObject.transform.rotation * targetOffset;
-        futurePosition = Vector3.Lerp(gameObject.transform.position, targetPosition, 0.5f);
-        cameraHolder.transform.position = futurePosition;
     }
 
 }
