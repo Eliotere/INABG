@@ -81,8 +81,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3342125260045867367}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.8051444, y: 0.5999999, z: -10}
+  m_LocalRotation: {x: 0.59693056, y: 0.000046868183, z: 0.00006300492, w: 0.80229294}
+  m_LocalPosition: {x: 0, y: 12.6, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -502,8 +502,8 @@ GameObject:
   m_Component:
   - component: {fileID: 268542190732502190}
   - component: {fileID: 6535411897601607541}
-  - component: {fileID: 4657281181782409139}
-  - component: {fileID: 980628883852955710}
+  - component: {fileID: 8919935672380706110}
+  - component: {fileID: 4726089178964311337}
   m_Layer: 0
   m_Name: CinemachineFollowCamera
   m_TagString: Untagged
@@ -519,8 +519,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6639256769231106245}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: 0.5969305, y: -0, z: -0, w: 0.80229294}
+  m_LocalPosition: {x: 0, y: 10, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Priority:
-    Enabled: 0
+    Enabled: 1
     m_Value: 0
   OutputChannel: 1
   StandbyUpdate: 2
@@ -569,7 +569,7 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
---- !u!114 &4657281181782409139
+--- !u!114 &8919935672380706110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -578,29 +578,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6639256769231106245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
+  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraDistance: 10
-  DeadZoneDepth: 0
-  Composition:
-    ScreenPosition: {x: 0, y: 0}
-    DeadZone:
-      Enabled: 0
-      Size: {x: 0.2, y: 0.2}
-    HardLimits:
-      Enabled: 0
-      Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0, y: 0, z: 0}
-  Lookahead:
-    Enabled: 0
-    Time: 0
-    Smoothing: 0
-    IgnoreY: 0
---- !u!114 &980628883852955710
+  TrackerSettings:
+    BindingMode: 3
+    PositionDamping: {x: 0.01, y: 0.01, z: 0.3}
+    AngularDampingMode: 0
+    RotationDamping: {x: 0.5, y: 0.5, z: 0.5}
+    QuaternionDamping: 1
+  FollowOffset: {x: 0, y: 10, z: -3}
+--- !u!114 &4726089178964311337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -676,7 +664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 25348035966973890, guid: 410bc4bc0a9117845931fbdff436ebed, type: 3}
       propertyPath: m_Interpolate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3745930886615568696, guid: 410bc4bc0a9117845931fbdff436ebed, type: 3}
       propertyPath: m_LocalPosition.x
