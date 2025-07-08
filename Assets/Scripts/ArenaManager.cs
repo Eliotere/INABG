@@ -7,6 +7,7 @@ public class ArenaManager : MonoBehaviour
 
     private List<GameObject> _players = new List<GameObject>();
     private List<GameObject> _ennemies = new List<GameObject>();
+    private List<GameObject> _entities = new List<GameObject>();
 
     [SerializeField]
     public int priority = 50;
@@ -21,51 +22,29 @@ public class ArenaManager : MonoBehaviour
     {
 
     }
-
-    public void AddPlayer(GameObject player)
+    
+    public void AddEntity(GameObject entity)
     {
-        _players.Add(player);
+        _entities.Add(entity);
         var FixeScale = 1;
-        player.transform.SetParent(transform.Find("Players"), worldPositionStays: true);
-        player.transform.localScale = new Vector3 (FixeScale/transform.lossyScale.x,FixeScale/transform.lossyScale.y,FixeScale/transform.lossyScale.z);
+        entity.transform.SetParent(transform.Find("Entities"), worldPositionStays: true);
+        entity.transform.localScale = new Vector3 (FixeScale/transform.lossyScale.x,FixeScale/transform.lossyScale.y,FixeScale/transform.lossyScale.z); // Keep the Scale of the object
     }
 
-    public bool RemovePlayer(GameObject player)
+    public bool RemoveEntity(GameObject entity)
     {
         try
         {
-            if (!_players.Remove(player))
+            if (!_entities.Remove(entity))
             {
-                throw new Exception("Player removal failed");
+                throw new Exception("Entity removal failed");
             }
+            entity.transform.SetParent(null, worldPositionStays: true);
             return true;
         }
         catch (Exception e)
         {
-            Debug.LogError($" Exception: {e.Message} when player removing '{player?.name}' from the arena '{this?.name}' ");
-            return false;
-        }
-    }
-
-    public void AddEnnemy(GameObject ennemy)
-    {
-        _players.Add(ennemy);
-        ennemy.transform.SetParent(transform.Find("Ennemies"), true);
-    }
-
-    public bool RemoveEnnemy(GameObject ennemy)
-    {
-        try
-        {
-            if (!_players.Remove(ennemy))
-            {
-                throw new Exception("Player removal failed");
-            }
-            return true;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($" Exception: {e.Message} when ennemy removing '{ennemy?.name}' from the arena '{this?.name}' ");
+            Debug.LogError($" Exception: {e.Message} when entity removing '{entity?.name}' from the arena '{this?.name}' ");
             return false;
         }
     }

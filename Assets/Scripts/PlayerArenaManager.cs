@@ -23,7 +23,17 @@ public class PlayerArenaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SetArena(GetHighestPriorityCloseArena(closeArenas)); // Can be null
+        GameObject newCondenter = GetHighestPriorityCloseArena(closeArenas); // Can be null
+        if (!newCondenter)
+        {
+            RemoveArena();
+        }
+        else if (newCondenter != parentArena)
+        {
+            SetArena(newCondenter);
+        }
+
+
         if (parentArena)
         {
             transform.rotation = parentArena.transform.rotation; // Actualize player rotation
@@ -41,20 +51,20 @@ public class PlayerArenaManager : MonoBehaviour
                 ArenaManager arenaManager = arena.GetComponent<ArenaManager>();
                 if (!arenaManager)
                 {
-                    throw new Exception("Component arxenaManager has not been found");
+                    throw new Exception("Component arenaManager has not been found");
                 }
 
                 if (parentArena)
                 {
-                    parentArena.GetComponent<ArenaManager>().RemovePlayer(gameObject);
+                    parentArena.GetComponent<ArenaManager>().RemoveEntity(gameObject);
                 }
-                arena.GetComponent<ArenaManager>().AddPlayer(gameObject);
+                arena.GetComponent<ArenaManager>().AddEntity(gameObject);
                 parentArena = arena;
 
             }
             catch (Exception e)
             {
-                Debug.LogError($" Exception: '{e.Message}' when setting player arena of '{this?.name}' for the arena '{arena?.name}' ");
+                Debug.LogError($" Exception: '{e.Message}' when setting entity arena of '{this?.name}' for the arena '{arena?.name}' ");
             }
         }
     }
@@ -74,23 +84,20 @@ public class PlayerArenaManager : MonoBehaviour
                 {
                     throw new Exception("Component 'arenaManager' has not been found");
                 }
-                if (parentArena)
-                {
-                    parentArena.GetComponent<ArenaManager>().RemovePlayer(gameObject);
-                }
-                gameObject.transform.SetParent(null);
+
+                parentArena.GetComponent<ArenaManager>().RemoveEntity(gameObject);
                 parentArena = null;
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($" Exception: {e.Message} when removing player arena of '{this?.name}' for the parentArena '{parentArena?.name}' ");
+            Debug.LogError($" Exception: {e.Message} when removing entity arena of '{this?.name}' for the parentArena '{parentArena?.name}' ");
         }
     }
 
     public void AddToCloseArenas(GameObject gameObject)
     {
-        closeArenas.Add(gameObject); // Add the arena to the list of arenas that the player can be in
+        closeArenas.Add(gameObject); // Add the arena to the list of arenas that the entity can be in
         SetArena(GetHighestPriorityCloseArena(closeArenas)); // Rechose what is the next parent arena
     }
 

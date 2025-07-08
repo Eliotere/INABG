@@ -15,6 +15,10 @@ public class PlayerGravityManager : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _normalizedGravityDirection = transform.up * -1; // Sets default gravity direction as local down
+        
+        ///////////////////////////////////////////////////////////////////
+        // WILL ADD DEPLACEMENTS BASED ON ARENA ROTATION AND DSIPLACEMENT
+        ///////////////////////////////////////////////////////////////////
     }
 
     // Update is called once per frame
