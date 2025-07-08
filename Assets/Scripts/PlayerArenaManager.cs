@@ -104,10 +104,7 @@ public class PlayerArenaManager : MonoBehaviour
     {
 
         List<GameObject> highestPriorityArenas = GetHighestPriorityArenas(arenas);
-        Debug.Log("highestPriorityArenas " + highestPriorityArenas);
-
         GameObject highestPriorityArenaCloestArena = GetNearestArena(highestPriorityArenas);
-        Debug.Log("highestPriorityArenaCloestArena " + highestPriorityArenaCloestArena);
         return highestPriorityArenaCloestArena;
     }
 

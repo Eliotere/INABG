@@ -25,7 +25,9 @@ public class ArenaManager : MonoBehaviour
     public void AddPlayer(GameObject player)
     {
         _players.Add(player);
-        player.transform.SetParent(transform.Find("Players"), true);
+        var FixeScale = 1;
+        player.transform.SetParent(transform.Find("Players"), worldPositionStays: true);
+        player.transform.localScale = new Vector3 (FixeScale/transform.lossyScale.x,FixeScale/transform.lossyScale.y,FixeScale/transform.lossyScale.z);
     }
 
     public bool RemovePlayer(GameObject player)
