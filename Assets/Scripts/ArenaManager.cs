@@ -26,9 +26,6 @@ public class ArenaManager : MonoBehaviour
     public void AddEntity(GameObject entity)
     {
         _entities.Add(entity);
-        var FixeScale = 1;
-        entity.transform.SetParent(transform.Find("Entities"), worldPositionStays: true);
-        entity.transform.localScale = new Vector3 (FixeScale/transform.lossyScale.x,FixeScale/transform.lossyScale.y,FixeScale/transform.lossyScale.z); // Keep the Scale of the object
     }
 
     public bool RemoveEntity(GameObject entity)
@@ -39,7 +36,6 @@ public class ArenaManager : MonoBehaviour
             {
                 throw new Exception("Entity removal failed");
             }
-            entity.transform.SetParent(null, worldPositionStays: true);
             return true;
         }
         catch (Exception e)
