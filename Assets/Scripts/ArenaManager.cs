@@ -9,6 +9,8 @@ public class ArenaManager : MonoBehaviour
     private List<GameObject> _ennemies = new List<GameObject>();
     private List<GameObject> _entities = new List<GameObject>();
 
+    public List<GameObject> getEntities() { return _entities; }
+
     [SerializeField]
     public int priority = 50;
 

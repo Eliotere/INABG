@@ -32,13 +32,11 @@ public class PlayerArenaManager : MonoBehaviour
         {
             SetArena(newCondenter);
         }
+    }
 
-
-        if (parentArena)
-        {
-            transform.rotation = parentArena.transform.rotation; // Actualize player rotation
-            _playerGravityManager.SetNormalizedGravityDirection(parentArena.transform.up * -1); // Actualize gravity direction
-        }
+    public void SetForward(Transform arena){
+        transform.rotation = arena.rotation; // Change the rotation of the player to be alligned with the arena
+        _playerGravityManager.SetNormalizedGravityDirection(arena.transform.up * -1); // Change the gravity og the player
     }
 
     public void SetArena(GameObject arena)
@@ -58,8 +56,9 @@ public class PlayerArenaManager : MonoBehaviour
                 {
                     parentArena.GetComponent<ArenaManager>().RemoveEntity(gameObject);
                 }
-                arena.GetComponent<ArenaManager>().AddEntity(gameObject);
-                parentArena = arena;
+                arena.GetComponent<ArenaManager>().AddEntity(gameObject); // Add the Entity to the Arena's list of entities for better tracking
+                SetForward(arena.transform);
+                parentArena = arena; // All good 
 
             }
             catch (Exception e)
