@@ -39,6 +39,7 @@ public class ArenaGravityManager : MonoBehaviour
 
                 // Teleport the Rigidbody to maintain same relative position
                 rb.MovePosition(newWorldPos);
+                // Compute velocity based on delta position (if not using physics to move)
 
                 // Optional: rotate player along with platform
                 Quaternion newRotation = transform.rotation;

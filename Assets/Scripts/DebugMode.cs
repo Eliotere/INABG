@@ -88,21 +88,22 @@ public class DebugMode : MonoBehaviour
     {
         Debug.Log("Debug1 key pressed!");
 
-        player.GetComponent<Rigidbody>().AddForce(new Vector3(100, 0, 0), ForceMode.Acceleration);
+        //player.GetComponent<Rigidbody>().AddForce(player.transform.forward * 1000, ForceMode.Acceleration);
+        player.GetComponent<Rigidbody>().AddForce(player.transform.forward * 1000, ForceMode.Acceleration);
     }
 
     private void Debug2(InputAction.CallbackContext context)
     {
         Debug.Log("Debug2 key pressed!");
 
-        player.GetComponent<Rigidbody>().AddForce(-player.transform.up * 100, ForceMode.Acceleration);
+        player.GetComponent<Rigidbody>().AddForce(-player.transform.up * 1000, ForceMode.Acceleration);
 
     }
 
     private void Debug3(InputAction.CallbackContext context)
     {
         Debug.Log("Debug3 key pressed!");
-        player.GetComponent<Rigidbody>().AddForce(player.transform.up * 100, ForceMode.Acceleration);
+        player.GetComponent<Rigidbody>().AddForce(player.transform.up * 1000, ForceMode.Acceleration);
     }
 
 private void Debug4(InputAction.CallbackContext context)
