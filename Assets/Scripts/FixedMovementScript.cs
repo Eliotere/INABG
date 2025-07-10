@@ -16,9 +16,18 @@ public class FixedMovementScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        transform.position = beginPosition * SinCoefficient(period) + endPosition * (1 - SinCoefficient(period));
+
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        if (rb)
+        {
+            rb.MovePosition(beginPosition * SinCoefficient(period) + endPosition * (1 - SinCoefficient(period)));
+        }
+        else
+        {
+            transform.position = beginPosition * SinCoefficient(period) + endPosition * (1 - SinCoefficient(period));
+        }
     }
     
     /// <summary>

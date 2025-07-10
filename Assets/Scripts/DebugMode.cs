@@ -10,9 +10,7 @@ public class DebugMode : MonoBehaviour
     private InputAction debug2Action;
     private InputAction debug3Action;
     private InputAction debug4Action;
-
-    public GameObject first_arena;
-    public GameObject second_arena;
+    
     public GameObject player;
 
 
@@ -89,29 +87,22 @@ public class DebugMode : MonoBehaviour
     {
         Debug.Log("Debug1 key pressed!");
 
-        player.GetComponent<PlayerArenaManager>().SetArena(first_arena);
+        player.GetComponent<Rigidbody>().AddForce(new Vector3(100, 0, 0), ForceMode.Acceleration);
     }
 
     private void Debug2(InputAction.CallbackContext context)
     {
         Debug.Log("Debug2 key pressed!");
-
-        player.GetComponent<PlayerArenaManager>().RemoveArena();
     }
 
     private void Debug3(InputAction.CallbackContext context)
     {
         Debug.Log("Debug3 key pressed!");
-
-        player.GetComponent<PlayerArenaManager>().SetArena(second_arena);
-
     }
 
     private void Debug4(InputAction.CallbackContext context)
     {
         Debug.Log("Debug4 key pressed!");
-
-        player.GetComponent<PlayerArenaManager>().RemoveArena();
     }
     
 

@@ -17,48 +17,54 @@ public class ArenaGravityManager : MonoBehaviour
         _previousRotation = transform.rotation;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (_previousPosition != transform.position) // If the platform move
+        Quaternion deltaRotation = transform.rotation * Quaternion.Inverse(_previousRotation);
+        Vector3 deltaPosition = transform.position - _previousPosition;
+
+        foreach (GameObject entity in _arenaManager.getEntities())
         {
-            // Add displacement to all entities
-            Vector3 arenaDisplacement = transform.position - _previousPosition;
-            foreach (GameObject entity in _arenaManager.getEntities()) {
-                entity.transform.position += arenaDisplacement;
-            }
-            // Add rigidboy displacement speed
-            // _arenaManager.entities
+            Rigidbody rb = entity.GetComponent<Rigidbody>();
+            if (!rb) continue;
+
+            // Local offset from the platform’s *previous* frame
+            Vector3 localOffset = Quaternion.Inverse(_previousRotation) * (rb.position - _previousPosition);
+
+            // Compute new world position after applying delta rotation and position
+            Vector3 newWorldPos = transform.position + (transform.rotation * localOffset);
+
+            // Teleport the Rigidbody to maintain same relative position
+            rb.MovePosition(newWorldPos);
+
+            // Optional: rotate player along with platform
+            Quaternion newRotation = deltaRotation * rb.rotation;
+            rb.MoveRotation(newRotation);
+
+            // Optional: Align visual up/forward with platform (depends on your design)
+            entity.GetComponent<PlayerArenaManager>().SetForward(transform);
+
+            PrintEntityPhysicsInfo(entity);
         }
 
-        if (_previousRotation != transform.rotation) // If the platform rotated
-        {
-            //  Rotation that occurred since last frame
-            Quaternion deltaRot = transform.rotation * Quaternion.Inverse(_previousRotation);
-
-            foreach (GameObject entity in _arenaManager.getEntities())
-            {
-                // vector from arena centre to entity
-                Vector3 localOffset = entity.transform.position - transform.position;
-                // where that vector points after the arena’s rotation
-                Vector3 rotatedOffset = deltaRot * localOffset;
-                // add the difference to the entity’s world position
-                entity.transform.position = transform.position + rotatedOffset;
-                /* ---------- orientational effect (make entity keep its local up) -- */
-                entity.GetComponent<PlayerArenaManager>().SetForward(transform);
-                //entity.transform.rotation = deltaRot * entity.transform.rotation;
-
-                //Set direction for gravity
-                //entity.GetComponent<PlayerGravityManager>.SetNormalizedGravityDirection();
-
-
-            }
-            // Add angular movement
-            // Add rigidboy angular speed
-            // _arenaManager.entities
-        }
-        
+        // Save current frame values for next update
         _previousPosition = transform.position;
         _previousRotation = transform.rotation;
+
+
     }
+    
+    void PrintEntityPhysicsInfo(GameObject entity)
+{
+    Rigidbody rb = entity.GetComponent<Rigidbody>();
+    if (rb != null)
+    {
+        float speed = rb.linearVelocity.magnitude;
+        Vector3 angularVelocity = rb.angularVelocity;
+        Debug.Log($"Entity: {entity.name} | Speed: {speed:F2} m/s | Angular Velocity: {angularVelocity}");
+    }
+    else
+    {
+        Debug.LogWarning($"Entity: {entity.name} does not have a Rigidbody component.");
+    }
+}
 }
