@@ -12,6 +12,7 @@ public class DebugMode : MonoBehaviour
     private InputAction debug4Action;
     
     public GameObject player;
+    public GameObject prefabToSpawn;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -93,17 +94,56 @@ public class DebugMode : MonoBehaviour
     private void Debug2(InputAction.CallbackContext context)
     {
         Debug.Log("Debug2 key pressed!");
+
+        player.GetComponent<Rigidbody>().AddForce(-player.transform.up * 100, ForceMode.Acceleration);
+
     }
 
     private void Debug3(InputAction.CallbackContext context)
     {
         Debug.Log("Debug3 key pressed!");
+        player.GetComponent<Rigidbody>().AddForce(player.transform.up * 100, ForceMode.Acceleration);
     }
 
-    private void Debug4(InputAction.CallbackContext context)
+private void Debug4(InputAction.CallbackContext context)
+{
+    Debug.Log("[ArenaGravityManager] Debug4 key pressed!");
+
+    // Spawn the item using current gravity-aligned rotation
+    GameObject item = Instantiate(
+        prefabToSpawn, 
+        transform.position, 
+        player.GetComponent<PlayerGravityManager>().GetGravityRotation()
+    );
+
+    Rigidbody rb = player.GetComponent<Rigidbody>();
+    if (rb == null)
     {
-        Debug.Log("Debug4 key pressed!");
+        Debug.LogWarning("[ArenaGravityManager] No Rigidbody found on player.");
+        return;
     }
+
+    Debug.Log("[ArenaGravityManager] --- Player Rigidbody Debug Info ---");
+
+    // World-space velocity
+    Debug.Log($"[ArenaGravityManager] Velocity (world): {rb.linearVelocity}");
+        Debug.Log($"[ArenaGravityManager] Speed (magnitude): {rb.linearVelocity.magnitude}");
+
+    // Local velocity (relative to player's transform)
+    Vector3 localVelocity = player.transform.InverseTransformDirection(rb.linearVelocity);
+    Debug.Log($"[ArenaGravityManager] Local Velocity: {localVelocity}");
+
+    // Gravity direction
+    Vector3 gravityDir = player.GetComponent<PlayerGravityManager>().GetGravityDirection();
+    Debug.Log($"[ArenaGravityManager] Current Gravity Direction: {gravityDir}");
+
+    // Up, forward, right (for orientation context)
+    Debug.Log($"[ArenaGravityManager] Player Up: {player.transform.up}");
+    Debug.Log($"[ArenaGravityManager] Player Forward: {player.transform.forward}");
+    Debug.Log($"[ArenaGravityManager] Player Right: {player.transform.right}");
+
+    Debug.Log("[ArenaGravityManager] --- End Rigidbody Debug Info ---");
+}
     
 
 }

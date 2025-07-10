@@ -35,8 +35,8 @@ public class PlayerArenaManager : MonoBehaviour
     }
 
     public void SetForward(Transform arena){
-        transform.rotation = arena.rotation; // Change the rotation of the player to be alligned with the arena
-        _playerGravityManager.SetNormalizedGravityDirection(arena.transform.up * -1); // Change the gravity og the player
+        gameObject.GetComponent<Rigidbody>().MoveRotation(arena.rotation);// Change the rotation of the player to be alligned with the arena
+        _playerGravityManager.SetGravityFromDirection(-arena.transform.up); // Change the gravity of the player
     }
 
     public void SetArena(GameObject arena)
