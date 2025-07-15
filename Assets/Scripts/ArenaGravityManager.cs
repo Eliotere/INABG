@@ -1,11 +1,15 @@
 
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ArenaGravityManager : MonoBehaviour
 {
 
     private Vector3 _previousPosition;
     private Quaternion _previousRotation;
+
+    // DEBUG
+    private Dictionary<GameObject, Transform> entitiesHistorics = new Dictionary<GameObject, Transform>();
 
     [SerializeField]
     private ArenaManager _arenaManager;
@@ -17,9 +21,85 @@ public class ArenaGravityManager : MonoBehaviour
         _previousRotation = transform.rotation;
     }
 
+    // void FixedUpdate()
+    // {
+    //     Quaternion deltaRotation = Quaternion.Inverse(_previousRotation) * transform.rotation;
+    //     Vector3 deltaPosition = transform.position - _previousPosition;
+
+    //     float epsilion = 1e-5f;
+    //     if (Quaternion.Angle(Quaternion.identity, deltaRotation) > epsilion || deltaPosition.magnitude > epsilion)
+    //     {
+    //         foreach (GameObject entity in _arenaManager.getEntities())
+    //         {
+    //             Rigidbody entityRB = entity.GetComponent<Rigidbody>();
+    //             if (!entityRB) continue;
+
+    //             // Sets new position/rotation
+    //             Vector3 oldWorldPos = entityRB.position;
+    //             Quaternion oldWorldRotation = entityRB.rotation;
+
+    //             UpdateEntityVelocity(entityRB);
+
+    //             Vector3 newWorldPos = CaculateEntityPostionAfterMovement(oldWorldPos);
+    //             // Teleport the Rigidbody to maintain same relative position
+    //             entityRB.MovePosition(newWorldPos);
+
+    //             Quaternion newRotation = CaculateEntityRotationAfterMovement();
+    //             entityRB.MoveRotation(newRotation);
+
+
+    //             // Set forward and gravity direction of Entity
+    //             entity.GetComponent<PlayerArenaManager>().SetForward(transform); // WARNING in its current state, the rotation is set twice (before and here)
+
+    //             // Update new forces of entity
+    //             Vector3 deltaWorldPos = entityRB.transform.position - oldWorldPos;
+    //             // Compute velocity based on delta position cause we don't use physics to move
+    //             Vector3 linearSpeedByArenaEntity = deltaWorldPos / Time.deltaTime;
+    //             // Rotate the velocity by the platform’s rotation change
+    //             // Align up/forward with platform 
+
+
+    //         }
+
+    //         // Save current frame values for next update
+    //         _previousPosition = transform.position;
+    //         _previousRotation = transform.rotation;
+
+
+    //     }
+    // }
+
+    //     private Vector3 CaculateEntityPostionAfterMovement(Vector3 entityPos)
+    //     {
+    //         // Local offset from the platform’s *previous* frame
+    //         // Vector3 oldWorldPos = entityRB.position;
+    //         Vector3 localOffset = Quaternion.Inverse(_previousRotation) * (entityPos - _previousPosition);
+
+    //         // Calculate new World Position
+    //         return transform.position + (transform.rotation * localOffset);
+    //     }
+
+    //     private Quaternion CaculateEntityRotationAfterMovement()
+    //     {
+    //         return transform.rotation; // Return the rotation of the platform
+    //     }
+
+    //     private void UpdateEntityVelocity(Rigidbody entityRB)
+    //     {
+    //         //Convert forces in the new Arena
+    //         // 1. Convert velocity from world space to local space
+    //         Vector3 localVelocity = Quaternion.Inverse(_previousRotation) * entityRB.linearVelocity;
+    //         Debug.Log(localVelocity);
+    //         // 2. Transform it into new world space (new orientation)
+    //         Vector3 rotatedVelocity = transform.rotation * localVelocity;
+    //         // 3. Apply it
+    //         entityRB.linearVelocity = rotatedVelocity;
+
+    //     }
+
     void FixedUpdate()
     {
-        Quaternion deltaRotation = transform.rotation * Quaternion.Inverse(_previousRotation);
+        Quaternion deltaRotation = Quaternion.Inverse(_previousRotation) * transform.rotation;
         Vector3 deltaPosition = transform.position - _previousPosition;
 
         float epsilion = 1e-5f;
@@ -27,30 +107,15 @@ public class ArenaGravityManager : MonoBehaviour
         {
             foreach (GameObject entity in _arenaManager.getEntities())
             {
-                Rigidbody rb = entity.GetComponent<Rigidbody>();
-                if (!rb) continue;
+                Rigidbody entityRB = entity.GetComponent<Rigidbody>();
+                if (!entityRB) continue;
 
-                // Local offset from the platform’s *previous* frame
-                Vector3 localOffset = Quaternion.Inverse(_previousRotation) * (rb.position - _previousPosition);
-                //Vector3 localOffset = entity.transform.position - _previousPosition;
+                UpdateEntityVelocity(entityRB);
 
-                // Compute new world position after applying delta rotation and position
-                Vector3 newWorldPos = transform.position + (transform.rotation * localOffset);
+                // Set forward and gravity direction of Entity
+                entity.GetComponent<PlayerArenaManager>().SetForward(transform); // WARNING in its current state, the rotation is set twice (before and here)
 
-                // Teleport the Rigidbody to maintain same relative position
-                rb.MovePosition(newWorldPos);
-                // Compute velocity based on delta position (if not using physics to move)
 
-                // Optional: rotate player along with platform
-                Quaternion newRotation = transform.rotation;
-                rb.MoveRotation(newRotation);
-
-                // Rotate the velocity by the platform’s rotation change
-                Vector3 rotatedVelocity = deltaRotation * rb.linearVelocity;
-                rb.linearVelocity = rotatedVelocity;
-
-                // Align  up/forward with platform 
-                entity.GetComponent<PlayerArenaManager>().SetForward(transform);
             }
 
             // Save current frame values for next update
@@ -60,20 +125,17 @@ public class ArenaGravityManager : MonoBehaviour
 
         }
     }
-    
-    void PrintEntityPhysicsInfo(GameObject entity)
+
+    private void UpdateEntityVelocity(Rigidbody entityRB)
     {
-        Rigidbody rb = entity.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            Vector3 linearVelocity = rb.linearVelocity;
-            float speed = linearVelocity.magnitude;
-            Vector3 angularVelocity = rb.angularVelocity;
-            Debug.Log($"Entity: {entity.name} | Speed: {speed:F2} m/s | Linear Velocity: {linearVelocity} | Angular Velocity: {angularVelocity}");
-        }
-        else
-        {
-            Debug.LogWarning($"Entity: {entity.name} does not have a Rigidbody component.");
-        }
+        //Convert forces in the new Arena
+        // 1. Convert velocity from world space to local space
+        Vector3 localVelocity = Quaternion.Inverse(_previousRotation) * entityRB.linearVelocity;
+        Debug.Log(localVelocity);
+        // 2. Transform it into new world space (new orientation)
+        Vector3 rotatedVelocity = transform.rotation * localVelocity;
+        // 3. Apply it
+        entityRB.linearVelocity = rotatedVelocity;
+
     }
 }
