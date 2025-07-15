@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FixedRotatationScript : MonoBehaviour
 {
@@ -12,8 +13,22 @@ public class FixedRotatationScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        gameObject.transform.Rotate(_rotationVector * Time.deltaTime);
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        if (rb)
+        {
+            // Calculate incremental rotation this physics frame as a Quaternion
+            Quaternion deltaRotation = Quaternion.Euler(_rotationVector * Time.fixedDeltaTime);
+
+            // Apply the rotation relative to current rotation
+            Quaternion newRotation = rb.rotation * deltaRotation;
+
+            rb.MoveRotation(newRotation);
+        }
+        else
+        {
+            transform.Rotate(_rotationVector * Time.deltaTime, Space.Self);
+        }
     }
 }

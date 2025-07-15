@@ -18,17 +18,17 @@ public class ArenaCloseCollider : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) {
-            GameObject player = other.transform.parent.gameObject;
-            player.GetComponent<PlayerArenaManager>().AddToCloseArenas(gameObject.transform.parent.gameObject);
+        if (other.CompareTag("Entity")) {
+            GameObject entity = other.gameObject;
+            entity.GetComponent<PlayerArenaManager>().AddToCloseArenas(gameObject.transform.parent.gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) {
-            GameObject player = other.transform.parent.gameObject;
-            player.GetComponent<PlayerArenaManager>().RemoveFromCloseArenas(gameObject.transform.parent.gameObject);
+        if (other.CompareTag("Entity")) {
+            GameObject entity = other.gameObject;
+            entity.GetComponent<PlayerArenaManager>().RemoveFromCloseArenas(gameObject.transform.parent.gameObject);
         }
     }
 }

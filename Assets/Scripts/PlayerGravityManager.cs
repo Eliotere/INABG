@@ -2,39 +2,91 @@ using UnityEngine;
 
 public class PlayerGravityManager : MonoBehaviour
 {
-
     private Rigidbody _rigidbody;
+
     [SerializeField]
     private float _gravityStrengh = 10.0f;
+
     [SerializeField]
-    private Vector3 _normalizedGravityDirection;
+    private Quaternion _gravityRotation; // This is the rotation to align with gravity
 
+    [SerializeField]
+    private Vector3 previousPosition;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField]
+    private Vector3 displacement;
+
+    [SerializeField]
+    private Vector3 calculatedVelocity;
+
+    // Start is called before the first frame update
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _normalizedGravityDirection = transform.up * -1; // Sets default gravity direction as local down
+
+        // Set default gravity direction (local down)
+        SetGravityFromDirection(-transform.up);
+
+        previousPosition = transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+    // FixedUpdate is called on a fixed time step
+    void FixedUpdate()
     {
         Fall();
+
+        // Calculate displacement and velocity based on previous position
+        displacement = transform.position - previousPosition;
+        calculatedVelocity = displacement / Time.fixedDeltaTime;
+
+        // Update for next frame
+        previousPosition = transform.position;
     }
 
     private void Fall()
     {
-        _rigidbody.AddForce(_normalizedGravityDirection * _gravityStrengh, ForceMode.Acceleration); // Gets the down vector * _fallStrengh
+        Vector3 gravityDirection = _gravityRotation * Vector3.down; // Aligned "down" vector
+        _rigidbody.AddForce(gravityDirection * _gravityStrengh, ForceMode.Acceleration);
     }
 
-    public void SetNormalizedGravityDirection(Vector3 newNormalizedGravityDirection)
+    public Vector3 GetDisplacement()
     {
-        _normalizedGravityDirection = newNormalizedGravityDirection;
+        return displacement;
     }
-    
-    public Vector3 GetNormalizedGravityDirection()
+
+    public float GetVelocityMagnitude()
     {
-        return _normalizedGravityDirection;
+        return calculatedVelocity.magnitude;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return calculatedVelocity;
+    }
+
+    public Vector3 VelocityDifference(Vector3 otherVelocity)
+    {
+        return calculatedVelocity - otherVelocity;
+    }
+
+    public void SetGravityFromDirection(Vector3 newGravityDir)
+    {
+        newGravityDir.Normalize();
+        _gravityRotation = Quaternion.FromToRotation(Vector3.up, -newGravityDir);
+    }
+
+    public void SetGravityDirection(Quaternion newGravityQuat)
+    {
+        _gravityRotation = newGravityQuat;
+    }
+
+    public Vector3 GetGravityDirection()
+    {
+        return _gravityRotation * Vector3.down;
+    }
+
+    public Quaternion GetGravityRotation()
+    {
+        return _gravityRotation;
     }
 }
